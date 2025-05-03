@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Water Quality Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #1e293b;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .chart-card {
+      background-color: #0f172a;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    canvas {
+      width: 100% !important;
+      max-width: 100%;
+      height: auto !important;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="text-align:center; margin-bottom: 2rem;">💧 Water Quality Dashboard</h1>
+
+  <div class="container">
+    <div class="chart-card">
+      <h2>pH Over Time</h2>
+      <canvas id="phChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>TDS Over Time</h2>
+      <canvas id="tdsChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>Temperature Over Time</h2>
+      <canvas id="tempChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>Turbidity Over Time</h2>
+      <canvas id="turbChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const labels = [
+      "2024-03-10", "2024-11-20", "2024-12-12", "2025-01-12",
+      "2025-01-14", "2025-01-17", "2025-01-26", "2025-02-04", "2025-02-17"
+    ];
+
+    const phData = [6.3, 7.6, 8.17, 6, 7.3, 6.8, 7.3, 6.84, 6.7];
+    const tdsData = [7, 10, 9, 9, 8, 12, 9, 13, 12];
+    const tempData = [27.1, 27.2, 27.3, 27.2, 27.1, 27.3, 27.4, 27.3, 27.1];
+    const turbData = [7, 8, 9, 8, 7, 6, 7, 8, 8];
+
+    const createChart = (id, label, data) => {
+      const ctx = document.getElementById(id).getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: label,
+            data: data,
+            borderColor: "#38bdf8",
+            backgroundColor: "#38bdf8",
+            tension: 0.3,
+            pointStyle: 'circle',
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            borderDash: [5, 5]
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              ticks: { color: '#ccc' },
+              grid: { color: 'rgba(255,255,255,0.1)' }
+            },
+            y: {
+              beginAtZero: false,
+              ticks: { color: '#ccc' },
+              grid: { color: 'rgba(255,255,255,0.1)' }
+            }
+          },
+          plugins: {
+            legend: {
+              labels: { color: '#ccc' }
+            }
+          }
+        }
+      });
+    };
+
+    createChart("phChart", "pH", phData);
+    createChart("tdsChart", "TDS (ppm)", tdsData);
+    createChart("tempChart", "Temperature (°C)", tempData);
+    createChart("turbChart", "Turbidity (NTU)", turbData);
+  </script>
+
+</body>
+</html>
